@@ -14,6 +14,9 @@ const ItemCount = ({ stock }) => {
       setCantidad(cantidad - 1);
     }
   };
+  const onAdd = () => {
+    alert(`Se agrego ${cantidad} unidad/es al carrito`);
+  };
 
   return (
     <>
@@ -24,7 +27,7 @@ const ItemCount = ({ stock }) => {
       <Button onClick={sumar} variant="ghost">
         +
       </Button>
-      <Button colorScheme="yellow" variant="outline">
+      <Button onClick={onAdd} colorScheme="yellow" variant="outline">
         Agregar al carrito
       </Button>
     </>
