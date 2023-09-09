@@ -12,4 +12,8 @@ Es como un for each en donde agarramos un array y por cada objeto del mismo pode
 
 ### Links
 
+## REACT ROUTER
+
+npm install react-router-dom
+
 [Guia](https://zeroidentidad.gitbook.io/)
