@@ -12,6 +12,7 @@ const ItemList = ({ productos }) => {
             stock={p.stock}
             descripcion={p.descripcion}
             key={p.id}
+            id={p.id}
           />
         );
       })}

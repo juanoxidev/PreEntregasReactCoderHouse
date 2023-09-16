@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
-const ItemCount = ({ stock }) => {
+const ItemCount = ({ stock, nombre }) => {
   const [cantidad, setCantidad] = useState(1);
   const sumar = () => {
     if (cantidad < stock) {
@@ -15,7 +15,7 @@ const ItemCount = ({ stock }) => {
     }
   };
   const onAdd = () => {
-    alert(`Se agrego ${cantidad} unidad/es al carrito`);
+    alert(`Se agrego ${cantidad} unidad/es de ${nombre} al carrito`);
   };
 
   return (
