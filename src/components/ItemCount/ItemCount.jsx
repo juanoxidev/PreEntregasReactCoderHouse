@@ -2,13 +2,12 @@ import React from "react";
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { useContext } from "react";
-import { CartContext } from "../../context/ShoppingCartContext";
+import { useCart } from "../../context/CartContext";
 
 const ItemCount = ({ producto }) => {
   const { stock, nombre } = producto;
   const [cantidad, setCantidad] = useState(1);
-  const { addItem, cart, setCart } = useContext(CartContext);
+  const { addItem, cart } = useCart();
 
   const sumar = () => {
     if (cantidad < stock) {
@@ -25,9 +24,6 @@ const ItemCount = ({ producto }) => {
     alert(`Se agrego ${cantidad} unidad/es de ${nombre} al carrito`);
     addItem(producto, cantidad);
   };
-  const mostrarCarro = () => {
-    console.log(cart);
-  };
 
   return (
     <>
@@ -41,7 +37,6 @@ const ItemCount = ({ producto }) => {
       <Button onClick={onAdd} colorScheme="yellow" variant="outline">
         Agregar al carrito
       </Button>
-      <button onClick={mostrarCarro}>M</button>
     </>
   );
 };

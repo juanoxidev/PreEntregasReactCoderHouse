@@ -10,7 +10,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import ItemCount from "../ItemCount/ItemCount";
-import ShoppingCartProvider from "../../context/ShoppingCartContext";
 
 const ItemDetail = ({ productos }) => {
   // const filteredProducts = productos.filter((p) => p.id == id);
@@ -38,9 +37,7 @@ const ItemDetail = ({ productos }) => {
               </CardBody>
               <Divider />
               <CardFooter>
-                <ShoppingCartProvider>
-                  <ItemCount producto={p} />
-                </ShoppingCartProvider>
+                <ItemCount producto={p} />
               </CardFooter>
             </Card>
           </div>

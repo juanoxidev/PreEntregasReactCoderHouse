@@ -1,10 +1,15 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 
-export const CartContext = createContext(null);
+// Creamos un contexto para el carrito
+export const CartContext = createContext();
 
-export const ShoppingCartProvider = ({ children }) => {
+// Creamos un proveedor que contiene el estado del carrito y funciones para modificarlo envolvemos nuestra app con este provider
+export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+
+  // Función para agregar un producto al carrito
   const addItem = (product, quantity) => {
+    console.log(product.id);
     if (isInCart(product.id)) {
       console.log("entrando a agregar mas cantidad");
       addMore(product, quantity);
@@ -13,13 +18,14 @@ export const ShoppingCartProvider = ({ children }) => {
       add(product, quantity);
     }
   };
-
+  // Función para agregar + de un producto al carrito
   const addMore = (product, quantity) => {
     const { id } = product;
     const productFound = findProduct(id);
     productFound.cantidad += quantity;
   };
 
+  // Función para agregar un producto al carrito
   const add = (product, quantity) => {
     const { nombre, precio, id } = product;
     const addProduct = {
@@ -28,25 +34,32 @@ export const ShoppingCartProvider = ({ children }) => {
       precio: precio,
       cantidad: quantity,
     };
-    setCart(...cart, addProduct);
+    setCart([...cart, addProduct]);
   };
+
+  // Función que pregunta si esta en el carrito
+
   const isInCart = (id) => {
     const resultado = cart.some((producto) => producto.id === id);
     return resultado;
   };
 
+  // Función para buscar un producto en el carrito
   const findProduct = (id) => {
     return cart.find((producto) => producto.id === id);
   };
 
+  // Función para eliminar todos los producto en el carrito
   const clear = () => {
     setCart([]);
   };
 
+  // Función para para eliminar un producto en el carrito
   const removeItem = (id) => {
-    const cartFiltered = cart.filter((product) => product.id === id);
+    const cartFiltered = cart.filter((product) => product.id !== id);
     setCart(cartFiltered);
   };
+
   return (
     <CartContext.Provider value={{ clear, removeItem, addItem, cart, setCart }}>
       {children}
@@ -54,6 +67,7 @@ export const ShoppingCartProvider = ({ children }) => {
   );
 };
 
-export default ShoppingCartProvider;
-
-// si tenes export const ShoppingCartProvider si o si tenes que recibirlo con ese nombre. Ahora si vos tenes al final export default ShoppingCartProvider , donde lo recibis podes ahcerlo con otro nombre
+// Un hook personalizado para acceder al contexto del carrito en cualquier componente
+export const useCart = () => {
+  return useContext(CartContext);
+};
