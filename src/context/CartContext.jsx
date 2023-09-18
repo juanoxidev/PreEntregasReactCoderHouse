@@ -40,8 +40,7 @@ export const CartProvider = ({ children }) => {
   // Función que pregunta si esta en el carrito
 
   const isInCart = (id) => {
-    const resultado = cart.some((producto) => producto.id === id);
-    return resultado;
+    return cart.some((producto) => producto.id === id);
   };
 
   // Función para buscar un producto en el carrito
@@ -60,8 +59,18 @@ export const CartProvider = ({ children }) => {
     setCart(cartFiltered);
   };
 
+  const productosEnCarrito = () => {
+    let cantidadTotal = 0;
+    cart.forEach((producto) => {
+      console.log(typeof producto.cantidad);
+      cantidadTotal += producto.cantidad;
+    });
+    return cantidadTotal;
+  };
   return (
-    <CartContext.Provider value={{ clear, removeItem, addItem, cart, setCart }}>
+    <CartContext.Provider
+      value={{ clear, removeItem, addItem, cart, setCart, productosEnCarrito }}
+    >
       {children}
     </CartContext.Provider>
   );
