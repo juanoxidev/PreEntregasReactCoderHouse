@@ -6,15 +6,18 @@ export const CartContext = createContext();
 // Creamos un proveedor que contiene el estado del carrito y funciones para modificarlo envolvemos nuestra app con este provider
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [unidades, setUnidades] = useState(0);
 
   // Función para agregar un producto al carrito
   const addItem = (product, quantity) => {
     console.log(product.id);
     if (isInCart(product.id)) {
       console.log("entrando a agregar mas cantidad");
+      setUnidades(unidades + quantity);
       addMore(product, quantity);
     } else {
       console.log("agregando por primera vez");
+      setUnidades(unidades + quantity);
       add(product, quantity);
     }
   };
@@ -50,26 +53,28 @@ export const CartProvider = ({ children }) => {
 
   // Función para eliminar todos los producto en el carrito
   const clear = () => {
+    setUnidades(0);
     setCart([]);
   };
 
   // Función para para eliminar un producto en el carrito
-  const removeItem = (id) => {
+  const removeItem = (id, cantidad) => {
     const cartFiltered = cart.filter((product) => product.id !== id);
     setCart(cartFiltered);
+    setUnidades(unidades - cantidad);
   };
 
-  const productosEnCarrito = () => {
-    let cantidadTotal = 0;
-    cart.forEach((producto) => {
-      console.log(typeof producto.cantidad);
-      cantidadTotal += producto.cantidad;
-    });
-    return cantidadTotal;
-  };
+  // const productosEnCarrito = () => {
+  //   let cantidadTotal = 0;
+  //   cart.forEach((producto) => {
+  //     console.log(typeof producto.cantidad);
+  //     cantidadTotal += producto.cantidad;
+  //   });
+  //   return cantidadTotal;
+  // };
   return (
     <CartContext.Provider
-      value={{ clear, removeItem, addItem, cart, setCart, productosEnCarrito }}
+      value={{ clear, removeItem, addItem, cart, setCart, unidades }}
     >
       {children}
     </CartContext.Provider>

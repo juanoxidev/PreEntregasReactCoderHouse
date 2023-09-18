@@ -7,18 +7,20 @@ import { useEffect, useState } from "react";
 // LISTADO DE ICONOS: https://fontawesome.com/search?q=shop&o=r
 
 const CartWidget = () => {
-  const { productosEnCarrito, cart } = useCart();
-  const [cantidad, setCantidad] = useState(0);
-  useEffect(() => {
-    // Este efecto se ejecutará cada vez que 'valor' cambie
-    setCantidad(productosEnCarrito());
-  }, [productosEnCarrito()]);
+  const { unidades } = useCart();
+
+  // useEffect(() => {
+  //   // Este efecto se ejecutará cada vez que 'valor' cambie
+  //   if (unidades === 0) {
+  //     unidades = "";
+  //   }
+  // }, [unidades]);
 
   return (
     <>
       <FontAwesomeIcon icon={faCartShopping} />
       <b>
-        <span>{cantidad}</span>
+        <span>{unidades}</span>
       </b>
     </>
   );
