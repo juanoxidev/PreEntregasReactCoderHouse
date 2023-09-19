@@ -12,8 +12,8 @@ import { useState, useEffect } from "react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useCart } from "../../context/CartContext";
 
-const CartItem = (p) => {
-  const { producto } = p;
+const CartItem = ({ producto }) => {
+  // desestructuracion de props.producto
   const { nombre, precio, cantidad, stock, id } = producto;
   const [cantidadMostrada, setCantidadMostrada] = useState(cantidad);
   const { modifyProduct, setUnidades, unidades, deleteProduct } = useCart();
