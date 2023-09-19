@@ -10,34 +10,41 @@ export const CartProvider = ({ children }) => {
 
   // Función para agregar un producto al carrito
   const addItem = (product, quantity) => {
-    console.log(product.id);
     if (isInCart(product.id)) {
       console.log("entrando a agregar mas cantidad");
-      setUnidades(unidades + quantity);
       addMore(product, quantity);
     } else {
       console.log("agregando por primera vez");
-      setUnidades(unidades + quantity);
       add(product, quantity);
     }
   };
   // Función para agregar + de un producto al carrito
   const addMore = (product, quantity) => {
+    console.log("codigo add more");
     const { id } = product;
     const productFound = findProduct(id);
-    productFound.cantidad += quantity;
+    const { cantidad, stock } = productFound;
+    let difCantidadStock = stock - cantidad;
+    if (difCantidadStock < 0 && quantity <= difCantidadStock) {
+      product.cantidad += quantity;
+      setUnidades(unidades + quantity);
+    } else {
+      console.log("No hay suficiente stock");
+    }
   };
 
   // Función para agregar un producto al carrito
   const add = (product, quantity) => {
-    const { nombre, precio, id } = product;
+    const { nombre, precio, id, stock } = product;
     const addProduct = {
       id: id,
       nombre: nombre,
       precio: precio,
       cantidad: quantity,
+      stock: stock,
     };
     setCart([...cart, addProduct]);
+    setUnidades(unidades + quantity);
   };
 
   // Función que pregunta si esta en el carrito
@@ -57,24 +64,46 @@ export const CartProvider = ({ children }) => {
     setCart([]);
   };
 
-  // Función para para eliminar un producto en el carrito
-  const removeItem = (id, cantidad) => {
-    const cartFiltered = cart.filter((product) => product.id !== id);
-    setCart(cartFiltered);
-    setUnidades(unidades - cantidad);
+  const deleteProduct = (id) => {
+    const updatedCart = cart.filter((product) => product.id !== id);
+    setCart(updatedCart);
   };
-
-  // const productosEnCarrito = () => {
-  //   let cantidadTotal = 0;
-  //   cart.forEach((producto) => {
-  //     console.log(typeof producto.cantidad);
-  //     cantidadTotal += producto.cantidad;
-  //   });
-  //   return cantidadTotal;
+  // // Función para para eliminar un producto en el carrito
+  // const removerProducto = (productId) => {
+  //   const updatedCart = cart.filter((product) => product.id !== productId);
+  //   setCart(updatedCart);
   // };
+
+  // Función para agregar + de un producto al carrito
+  const modifyProduct = (product, quantity) => {
+    const { id } = product;
+    const productFound = findProduct(id);
+    if (quantity <= productFound.stock) {
+      productFound.cantidad = quantity;
+    } else {
+      console.log("A seleccionado una cantidad mayor a la que tiene el pedido");
+    }
+  };
+  const montoEnCarrito = () => {
+    let montoTotal = 0;
+    cart.forEach((producto) => {
+      const { cantidad, precio } = producto;
+      montoTotal += cantidad * precio;
+    });
+    return montoTotal;
+  };
   return (
     <CartContext.Provider
-      value={{ clear, removeItem, addItem, cart, setCart, unidades }}
+      value={{
+        clear,
+        addItem,
+        cart,
+        unidades,
+        setUnidades,
+        modifyProduct,
+        montoEnCarrito,
+        deleteProduct,
+      }}
     >
       {children}
     </CartContext.Provider>

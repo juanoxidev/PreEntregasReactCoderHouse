@@ -5,9 +5,9 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useCart } from "../../context/CartContext";
 
 const ItemCount = ({ producto }) => {
-  const { stock, nombre } = producto;
+  const { stock } = producto;
   const [cantidad, setCantidad] = useState(1);
-  const { addItem, cart } = useCart();
+  const { addItem } = useCart();
 
   const sumar = () => {
     if (cantidad < stock) {
@@ -21,7 +21,6 @@ const ItemCount = ({ producto }) => {
     }
   };
   const onAdd = () => {
-    alert(`Se agrego ${cantidad} unidad/es de ${nombre} al carrito`);
     addItem(producto, cantidad);
   };
 

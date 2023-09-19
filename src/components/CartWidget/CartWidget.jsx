@@ -20,7 +20,7 @@ const CartWidget = () => {
     <>
       <FontAwesomeIcon icon={faCartShopping} />
       <b>
-        <span>{unidades}</span>
+        <span>{unidades !== 0 ? unidades : ""}</span>
       </b>
     </>
   );
