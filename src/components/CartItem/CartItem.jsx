@@ -32,7 +32,7 @@ const CartItem = (p) => {
     }
   };
   const modificar = () => {
-    if (cantidadMostrada < stock) {
+    if (cantidadMostrada <= stock) {
       let difCantidad = cantidadMostrada - cantidad;
       setUnidades(unidades + difCantidad);
       modifyProduct(producto, cantidadMostrada);

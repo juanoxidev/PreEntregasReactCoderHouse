@@ -20,12 +20,13 @@ export const CartProvider = ({ children }) => {
   };
   // Función para agregar + de un producto al carrito
   const addMore = (product, quantity) => {
-    console.log("codigo add more");
+    console.log("codigo add more ARREGLAR CONDICIONAL");
     const { id } = product;
     const productFound = findProduct(id);
     const { cantidad, stock } = productFound;
     let difCantidadStock = stock - cantidad;
-    if (difCantidadStock < 0 && quantity <= difCantidadStock) {
+    console.log(difCantidadStock);
+    if (difCantidadStock > 0 && quantity <= difCantidadStock) {
       product.cantidad += quantity;
       setUnidades(unidades + quantity);
     } else {
@@ -78,6 +79,10 @@ export const CartProvider = ({ children }) => {
   const modifyProduct = (product, quantity) => {
     const { id } = product;
     const productFound = findProduct(id);
+    console.log(productFound.stock);
+    console.log(quantity == productFound.stock);
+    console.log(quantity > productFound.stock);
+    console.log(cart);
     if (quantity <= productFound.stock) {
       productFound.cantidad = quantity;
     } else {
