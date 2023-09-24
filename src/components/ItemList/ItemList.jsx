@@ -1,6 +1,8 @@
 import React from "react";
 import Item from "../Item/Item";
 
+//memorizacion
+
 const ItemList = ({ productos }) => {
   return (
     <div>
@@ -20,4 +22,4 @@ const ItemList = ({ productos }) => {
   );
 };
 
-export default ItemList;
+export default React.memo(ItemList);

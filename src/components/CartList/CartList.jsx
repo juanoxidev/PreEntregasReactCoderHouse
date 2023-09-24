@@ -5,7 +5,7 @@ import CartItem from "../CartItem/CartItem";
 const CartList = () => {
   const { clear, cart, montoEnCarrito } = useCart();
   return (
-    <div>
+    <>
       {cart.map((p) => {
         return (
           <div key={p.id}>
@@ -13,10 +13,15 @@ const CartList = () => {
           </div>
         );
       })}
-
-      <Button onClick={clear}>Eliminar Carrito</Button>
-      <h3>Monto total: ${montoEnCarrito()}.-</h3>
-    </div>
+      {cart.length > 0 ? (
+        <>
+          <Button onClick={clear}>Eliminar Carrito</Button>
+          <h3>Monto total: ${montoEnCarrito()}.-</h3>
+        </>
+      ) : (
+        console.log("No hay productos en el carrito")
+      )}
+    </>
   );
 };
 

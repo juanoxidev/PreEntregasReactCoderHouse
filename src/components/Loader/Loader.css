@@ -1,0 +1,42 @@
+/* // Centrar elementos//
+  margin:auto;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  position:fixed; */
+
+.heroimg {
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: fixed;
+}
+.custom-loader {
+  background: repeating-linear-gradient(
+        135deg,
+        #f4d03f 0 10px,
+        #f4d03fbf 0 20px
+      )
+      left/0% 100% no-repeat,
+    repeating-linear-gradient(135deg, #f4d03f33 0 10px, #f4d03f1a 0 20px)
+      left/100% 100%;
+  animation: p3 2s infinite;
+  width: 500px;
+  height: 100px;
+  border-radius: 3px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: -1;
+}
+@keyframes p3 {
+  100% {
+    background-size: 100% 100%;
+  }
+}

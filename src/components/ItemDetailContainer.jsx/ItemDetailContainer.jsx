@@ -1,57 +1,27 @@
 import ItemDetail from "../ItemDetail/itemDetail";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 const ItemDetailContainer = () => {
-  const productos = [
-    {
-      id: 1,
-      nombre: "Amatista",
-      precio: 125000,
-      descripcion: "Vela Amatista",
-      stock: 5,
-      categoria: "A",
-    },
-    {
-      id: 2,
-      nombre: "Eucalipto",
-      precio: 5000,
-      descripcion: "Vela Eucalipto",
-      stock: 15,
-      categoria: "O",
-    },
-    {
-      id: 3,
-      nombre: "Savage",
-      precio: 5000,
-      descripcion: "Vela Savage",
-      stock: 20,
-      categoria: "EL",
-    },
-    {
-      id: 4,
-      nombre: "Souvenier x100 variado",
-      precio: 300000,
-      descripcion: "Souvenier Velas x100 Variado",
-      stock: 2,
-      categoria: "S",
-    },
-    {
-      id: 5,
-      nombre: "Souvenier x100 unico",
-      precio: 200000,
-      descripcion: "Souvenier Velas x100 Unico",
-      stock: 3,
-      categoria: "S",
-    },
-  ];
-
   const { pid } = useParams();
+  const [producto, setProducto] = useState([]);
 
-  const filteredProduct = productos.filter((p) => p.id == pid); //filtro el producto que seleccione para ver mas detalles
+  useEffect(() => {
+    const db = getFirestore();
+    const oneItem = doc(db, "producto", `${pid}`);
+    getDoc(oneItem).then((snapshot) => {
+      if (snapshot.exists()) {
+        //agrega tanto la data del producto como el id de firebase
+        const doc = { id: snapshot.id, ...snapshot.data() };
+        setProducto(doc);
+      }
+    });
+  }, [pid]);
 
   return (
     <>
-      <ItemDetail productos={filteredProduct} />;
+      <ItemDetail producto={producto} />;
     </>
   );
 };

@@ -33,14 +33,9 @@ export const CartProvider = ({ children }) => {
 
   // Función para agregar un producto al carrito
   const add = (product, quantity) => {
-    const { nombre, precio, id, stock } = product;
-    const addProduct = {
-      id: id,
-      nombre: nombre,
-      precio: precio,
-      cantidad: quantity,
-      stock: stock,
-    };
+    //como agregar una propiedad a un objeto
+    const addProduct = { cantidad: quantity, ...product };
+    console.log(addProduct);
     setCart([...cart, addProduct]);
     setUnidades(unidades + quantity);
   };
