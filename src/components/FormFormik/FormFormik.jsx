@@ -1,10 +1,42 @@
 import { useState } from "react";
-import { Formik, Form, Field, Error, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { collection, getFirestore, addDoc } from "firebase/firestore";
+import { useCart } from "../../context/CartContext";
+
 import "./FormFormik.css";
 
 export const FormFormik = () => {
+  const { cart, montoEnCarrito, clear } = useCart();
+  const [orderId, setOrderId] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [formSended, setFormSended] = useState(false);
+  const formatoGuarani = new Intl.NumberFormat("es-PY", {
+    style: "currency",
+    currency: "PYG",
+  });
+
+  const db = getFirestore(); // obtenemos la base de datos
   // formik identifica los inputs por la etiqueta name, hay que ponerlo siempre
+  const order = {
+    fecha: new Date(Date.now()).toLocaleDateString(),
+    buyer: {
+      name,
+      email,
+    },
+    // items del carrito cart
+    items: cart.map(({ id, nombre, precio }) => ({
+      id,
+      nombre,
+      precio,
+    })),
+    //total de la compra
+    total: montoEnCarrito(),
+  };
+
+  // duda: al formatear al guarani, a la hora de subirlo a la base de datos se muestra como un string "GS. montox" es correcto o debe ser un numero?, Conviene dejar la fecha en formato milisegundos? ya que en caso de que quisiera ordenar x fecha seria util ese dato en milisegundos.
+
+  const orderCollection = collection(db, "orden");
 
   return (
     <>
@@ -21,6 +53,8 @@ export const FormFormik = () => {
             // probar una regex .test(parametro a analizar)
           } else if (!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombre)) {
             errores.nombre = "El nombre solo puede contener letras y espacios";
+          } else {
+            setName(valores.nombre);
           }
           // Validacion correo
           if (!valores.correo) {
@@ -32,19 +66,23 @@ export const FormFormik = () => {
             )
           ) {
             errores.correo = "No es un correo valido";
+          } else {
+            setEmail(valores.correo);
           }
+
           return errores;
         }}
-        onSubmit={(valores, { resetForm }) => {
-          resetForm();
-          console.log(valores);
+        onSubmit={() => {
+          addDoc(orderCollection, order).then(({ id }) => setOrderId(id));
           setFormSended(true);
-          setTimeout(() => setFormSended(false), 5000);
+          setTimeout(() => {
+            setFormSended(false);
+            clear();
+          }, 4000);
         }}
       >
         {({ errors }) => (
           <Form className="formulario">
-            {console.log(errors)}
             <div>
               <label htmlFor="nombre">Nombre</label>
               <Field
@@ -77,7 +115,10 @@ export const FormFormik = () => {
             </div>
             <button type="submit">Enviar</button>
             {formSended && (
-              <p className="exito">Formulario enviado con exito!</p>
+              <>
+                <p className="exito">Formulario enviado con exito!</p>
+                <p className="exito">Orden ID: {orderId}</p>
+              </>
             )}
           </Form>
         )}

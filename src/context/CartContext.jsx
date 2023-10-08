@@ -35,7 +35,6 @@ export const CartProvider = ({ children }) => {
   const add = (product, quantity) => {
     //como agregar una propiedad a un objeto
     const addProduct = { cantidad: quantity, ...product };
-    console.log(addProduct);
     setCart([...cart, addProduct]);
     setUnidades(unidades + quantity);
   };

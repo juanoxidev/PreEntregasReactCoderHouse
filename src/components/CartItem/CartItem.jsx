@@ -11,10 +11,12 @@ import {
 import { useState, useEffect } from "react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useCart } from "../../context/CartContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const CartItem = ({ producto }) => {
   // desestructuracion de props.producto
-  const { nombre, precio, cantidad, stock, id } = producto;
+  const { nombre, precio, cantidad, stock, id, descripcion } = producto;
   const [cantidadMostrada, setCantidadMostrada] = useState(cantidad);
   const { modifyProduct, setUnidades, unidades, deleteProduct } = useCart();
   useEffect(() => {
@@ -42,21 +44,22 @@ const CartItem = ({ producto }) => {
     deleteProduct(id);
     setUnidades(unidades - cantidad);
   };
-
+  const formatoGuarani = new Intl.NumberFormat("es-PY", {
+    style: "currency",
+    currency: "PYG",
+  });
   return (
     <>
       <Card maxW="sm">
         <CardBody>
           <Image
-            src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-            alt="Green double couch with wooden legs"
+            src="https://firebasestorage.googleapis.com/v0/b/prueba-765b7.appspot.com/o/touchicon-180.png?alt=media&token=a03cbb64-8cd0-4431-a1e6-a8a695f1fa78&_gl=1*a1xwe6*_ga*MTQ5Nzk2NDQ1NC4xNjk1ODQ0NjUz*_ga_CW55HF8NVT*MTY5NjA5MDE1Mi4yLjEuMTY5NjA5MDI0Ny40MS4wLjA."
+            alt={descripcion}
             borderRadius="lg"
           />
           <Stack mt="6" spacing="3">
             <Heading size="md">{nombre}</Heading>
-            <Text color="blue.600" fontSize="2xl">
-              ${precio}
-            </Text>
+            <Text fontSize="2xl">{formatoGuarani.format(precio)}.-</Text>
           </Stack>
         </CardBody>
         <Button onClick={restar} variant="ghost">
@@ -67,7 +70,13 @@ const CartItem = ({ producto }) => {
           <AddIcon />
         </Button>
         <Divider />
-        <Button onClick={eliminar} variant="ghost">
+        <Button
+          onClick={eliminar}
+          variant="ghost"
+          leftIcon={
+            <FontAwesomeIcon icon={faTrashCan} style={{ color: "#000000" }} />
+          }
+        >
           Eliminar
         </Button>
       </Card>
